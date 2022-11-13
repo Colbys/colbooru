@@ -28,6 +28,8 @@ hs_err_pid*
 log/
 target/
 
+backend/.gradle/
+
 # Inclusions
 !lib/**
 
