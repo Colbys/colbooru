@@ -1,0 +1,85 @@
+@startuml
+!pragma layout smetana
+
+package Tags {
+    class Tag {
+        id: String
+        name: String
+    }
+
+    class TagView {
+        id: String
+        name: String
+        count: Integer
+        + fromTag(tag: Tag, count: Integer)
+    }
+
+    class TagRepository {
+        - jdbcOperations: JdbcOperations
+        + getBatch(): List<Tag>
+        + create(tag: Tag): Tag
+        + update(id: String, tag: Tag): Tag
+        + delete(id: String)
+        + getTagCount(id: String): Integer
+    }
+
+    class TagService {
+        - tagRepository: TagRepository
+        + getBatch(): List<TagView>
+        + create(): TagView
+        + update(): TagView
+        + delete()
+    }
+
+    class TagsController {
+        - tagService: TagService
+        + getBatch(): List<TagView>
+        + create(): TagView
+        + update(): TagView
+        + delete()
+    }
+}
+
+package Images {
+    class Image {
+        id: String
+        uri: String
+    }
+
+    class ImagesController {
+        - imageService: ImageService
+        + getBatch(): List<Image>
+        + get(id: String): Image
+        + create(): Image
+        + update(id: String): Image
+        + delete(id: String)
+    }
+
+    class ImageService {
+        - imageRepository: ImageRepository
+        - imageStorage: ImageStorage
+        + getBatch(): List<Image>
+        + get(id: String): Image
+        + create(): Image
+        + update(id: String): Image
+        + delete(id: String)
+    }
+
+    class ImageStorage {
+        - minioClient: MinioClient
+        + get(uri: String)
+        + put()
+        + delete()
+    }
+
+    class ImageRepository {
+        - jdbcOperations: JdbcOperations
+        + getBatch(): List<Image>
+        + get(id: String): Image
+        + create(): Image
+        + update(id: String): Image
+        + delete(id: String)
+    }
+}
+
+@enduml
